@@ -1,7 +1,18 @@
 import unicodedata
 
 # Convertir texto a lower case, cambiar espacio por underscores y quitar tildes.
-def format_string(texto: str):
+def format_string(texto: str) -> str:
+    """Convierte un string al formato requerido:
+    * Todo minúsculas
+    * Sin tíldes
+    * Espacios reemplazados por guión bajo
+
+    Args:
+        texto (str): Texto a formatear
+
+    Returns:
+        str: Texto formateado
+    """
     # Convertir a minúsculas
     texto = texto.lower()
     
@@ -15,5 +26,3 @@ def format_string(texto: str):
     texto = texto.replace(' ', '-')
     
     return texto
-
-

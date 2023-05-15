@@ -1,8 +1,9 @@
-from typing import Any, Dict, Optional, Union
 import requests
 
+from typing import Any, Dict, Optional, Union
 
-class RequestHandler:
+
+class HTTPRequestHandler:
     def __init__(self, base_url: str, headers: Optional[Dict[str, str]] = None):
         self.base_url = base_url
 

@@ -21,23 +21,26 @@ class CompuTrabajo:
         self.details = {}
 
     def get_job_details(self, job: str, location: str) -> Dict[str, str]:
+        jobs_results = []
         offers_links = self._get_offers_links(job, location)
         for offer_link in offers_links:
             offer_details_html = self._get_offer_details_html(offer_link)
 
             offer_details_scraper = Scraper(offer_details_html)
-            job_name = offer_details_scraper.scrape_job_name()
-            company = offer_details_scraper.scrape_company()
-            salary = offer_details_scraper.scrape_salary()
-            requirements = offer_details_scraper.scrape_requirements()
-            print("*" * 50)
-            print(f"Job Name: {job_name}")
-            print(f"Company Name: {company}")
-            print(f"Salary: {salary}")
-            print(f"Requirements: {salary}")
-            for req in requirements:
-                print(f"-- {req}")
-            print("*" * 50)
+            job_info = {}
+            job_info['job_name'] = offer_details_scraper.scrape_job_name()
+            job_info['company'] = offer_details_scraper.scrape_company()
+            job_info['salary'] = offer_details_scraper.scrape_salary()
+            job_info['requirements'] = offer_details_scraper.scrape_requirements()
+            # print("*" * 50)
+            # print(f"Job Name: {job_info['job_name']}")
+            # print(f"Company Name: {job_info['company']}")
+            # print(f"Salary: {job_info['salary']}")
+            # print(f"Requirements: {job_info['requirements']}")
+            # print("*" * 50)
+            jobs_results.append(job_info)
+        print(len(jobs_results))
+        #TODO: Now to CSV
 
 
     def _get_offers_links(self, job: str, location: str) -> List[str]:

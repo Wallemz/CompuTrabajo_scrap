@@ -39,12 +39,14 @@ class Scraper:
         ul = self.soup.find('ul', {'class': 'disc mbB'})
 
         if not ul:
-            return []
+            return ""
         # Encontrar todos los <li> dentro del <ul>
         lis = ul.find_all('li', {'class': 'mb10'})
 
         if not lis:
-            return []
+            return ""
         
         # Crear una lista con el contenido de cada <li>
-        return [li.text for li in lis]
+        final_list =  [li.text for li in lis]
+
+        return '\n'.join(final_list)

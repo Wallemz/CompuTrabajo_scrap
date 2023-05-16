@@ -3,7 +3,7 @@
 jobs = [
     # "Ingeniero de sistemas",
     # "Guardia de seguridad",
-    "Analista de calidad"
+    "Ganadero"
 ]
 
 # Lista de ubicaciones (Departamentos)

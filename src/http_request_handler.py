@@ -6,6 +6,9 @@ from typing import Any, Dict, Optional, Union
 class HTTPRequestHandler:
     def __init__(self, base_url: str, headers: Optional[Dict[str, str]] = None):
         self.base_url = base_url
+        if not headers:
+            self.headers = None
+        self.headers = headers
 
     def _send_request(
         self,
@@ -28,6 +31,9 @@ class HTTPRequestHandler:
             Optional[Union[Dict[str, Any], str]]: Retorna la respuesta de la petición, en caso de no
             haber respuesta retorna None
         """
+        if headers == None:
+            headers = self.headers
+
         url = self.base_url + endpoint
         response = requests.request(
             method, url, headers=headers, data=data, params=params
@@ -59,6 +65,8 @@ class HTTPRequestHandler:
         Returns:
             Optional[Dict[str, Any] | str]: _description_
         """
+        if headers == None:
+            headers = self.headers
         return self._send_request("GET", endpoint, headers=headers, params=params)
 
     def post(
@@ -77,6 +85,8 @@ class HTTPRequestHandler:
         Returns:
             Optional[Dict[str, Any] | str]: _description_
         """
+        if headers == None:
+            headers = self.headers
         return self._send_request("POST", endpoint, headers=headers, data=data)
 
     def put(
@@ -95,6 +105,8 @@ class HTTPRequestHandler:
         Returns:
             Optional[Dict[str, Any] | str]: _description_
         """
+        if headers == None:
+            headers = self.headers
         return self._send_request("PUT", endpoint, headers=headers, data=data)
 
     def delete(
@@ -109,4 +121,6 @@ class HTTPRequestHandler:
         Returns:
             Optional[Dict[str, Any] | str]: _description_
         """
+        if headers == None:
+            headers = self.headers
         return self._send_request("DELETE", endpoint, headers=headers)

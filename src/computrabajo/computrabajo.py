@@ -1,4 +1,4 @@
-from typing import Any, Dict, List, Tuple
+from typing import Any, Dict, List, Optional, Tuple
 
 from src.http_request_handler import HTTPRequestHandler
 from src.computrabajo.scrapper import Scraper
@@ -7,6 +7,9 @@ from utils.validations import is_html
 
 
 class CompuTrabajo:
+    """Class specialization of "BolsaDeEmpleo" thta implements all the methods
+    to scrap in CompuTrabajo
+    """
     def __init__(self) -> None:
         self.request_handler = HTTPRequestHandler(
             base_url = "https://co.computrabajo.com",
@@ -21,6 +24,15 @@ class CompuTrabajo:
         self.details = {}
 
     def get_jobs_details(self, job: str, location: str) -> List[Dict[str, Any]]:
+        """Iterate over all the offer links and gets the job details
+
+        Args:
+            job (str): Job Name
+            location (str): Location
+
+        Returns:
+            List[Dict[str, Any]]: List of dictionaries with the job details for each job offer.
+        """
         jobs_details = []
         offers_links = self._get_offers_links(job, location)
         for offer_link in offers_links:
@@ -42,31 +54,38 @@ class CompuTrabajo:
 
 
     def _get_offers_links(self, job: str, location: str) -> List[str]:
-        # Se estandariza el formato de entrada.
-        formatted_job, formatted_location = self._format_input(job, location)
+        """Itearte over the CompuTrabajo page to find all the endpoints.
 
+        Args:
+            job (str): Job Name
+            location (str): Location
+
+        Returns:
+            List[str]: List with the jobb offers endpoints
+        """
+        formatted_job, formatted_location = self._format_input(job, location)
         jobs_links = []
 
         for i in range(1, 3000):
             endpoint = f"/trabajo-de-{formatted_job}-en-{formatted_location}?p={i}"
-            # Se realiza la petición HTTP
             response = self.request_handler.get(endpoint)
-
             if response is None or not is_html(response):
                 continue
 
             job_offers_scraper = Scraper(response)
             new_jobs_links = job_offers_scraper.scrape_offers_links()
-
             if not new_jobs_links:
                 break
-
             jobs_links += new_jobs_links
-
         return jobs_links
 
 
-    def _get_offer_details_html(self, endpoint: str):
+    def _get_offer_details_html(self, endpoint: str) -> Optional[(Dict[str, Any] | str | None)]:
+        """Gets the HTML that contains the offer details
+
+        Returns:
+            _type_: HTML
+        """
         response = self.request_handler.get(endpoint)
         if response is None or not is_html(response):
             return None
@@ -74,4 +93,13 @@ class CompuTrabajo:
 
 
     def _format_input(self, job: str, location: str) -> Tuple[str, str]:
+        """Converts the input to the required format.
+
+        Args:
+            job (str): Job Name
+            location (str): Location
+
+        Returns:
+            Tuple[str, str]: Formatted variables
+        """
         return format_string(job), format_string(location)

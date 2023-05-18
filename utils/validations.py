@@ -1,14 +1,14 @@
 import json
+import os
 
-# Revisar si un string es un JSON valido
-def is_json(variable) -> bool:
-    """Valida si una variable contiene un json válido.
+def is_json(variable: str | bytes | bytearray) -> bool:
+    """Check if a string is a valid JSON
 
     Args:
-        variable (_type_): Variable con json
+        variable (str | bytes | bytearray): Variable to check
 
     Returns:
-        bool: Booleano con validación
+        bool: _description_
     """
     try:
         json.loads(variable)
@@ -16,14 +16,33 @@ def is_json(variable) -> bool:
     except json.JSONDecodeError:
         return False
 
-# Revisar si la respuesta es un documento HTML
 def is_html(response: str) -> bool:
-    """Valida si un string contiene etiquetas HTML.
+    """Check if response contains html tags
 
     Args:
-        response (str): String a validar.
+        response (str): String to check
 
     Returns:
-        bool: Booleano con la validación
+        bool: _description_
     """
     return "<html" in response.lower() or "<head" in response.lower()
+
+def ensure_dir(directory: str) -> bool:
+    """Check if a dolder exists if not creates it.
+
+    Args:
+        directory (str): Folder path
+
+    Returns:
+        bool: Created, already created or not
+    """
+    try:
+        os.makedirs(directory)
+        print("Output folder created")
+        return True
+    except FileExistsError:
+        print(f"Output folder already exists")
+        return True
+    except Exception as e:
+        print(f"Could not create output folder -{e}")
+        return False

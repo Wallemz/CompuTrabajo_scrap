@@ -4,6 +4,8 @@ from typing import Any, Dict, Optional, Union
 
 
 class HTTPRequestHandler:
+    """Class to make HTTP Request: POST, GET, PUT, DELETE
+    """
     def __init__(self, base_url: str, headers: Optional[Dict[str, str]] = None):
         self.base_url = base_url
         if not headers:
@@ -18,18 +20,17 @@ class HTTPRequestHandler:
         data: Optional[Union[str, Dict[str, Any]]] = None,
         params: Optional[Dict[str, Any]] = None,
     ) -> Optional[Union[Dict[str, Any], str]]:
-        """Método para enviar una petición HTTP a una URL
+        """General Method to send a HTTP Request
 
         Args:
-            method (str): El método HTTP a usar, eg. POST GET PUT DELETE
-            endpoint (str): Es la parte final del link, luego del dominio de la página WEB
-            headers (Optional[Dict[str, str]], optional): Headers de la petición. Defaults to None.
-            data (Optional[Union[str, Dict[str, Any]]], optional): Información a enviar dentro de la petición. Defaults to None.
-            params (Optional[Dict[str, Any]], optional): Parámetros de la petición. Defaults to None.
+            method (str): HTTP method, eg. POST GET PUT DELETE
+            endpoint (str): Final part of the web link
+            headers (Optional[Dict[str, str]], optional): Headers. Defaults to None.
+            data (Optional[Union[str, Dict[str, Any]]], optional): Data . Defaults to None.
+            params (Optional[Dict[str, Any]], optional): Params . Defaults to None.
 
         Returns:
-            Optional[Union[Dict[str, Any], str]]: Retorna la respuesta de la petición, en caso de no
-            haber respuesta retorna None
+            Optional[Union[Dict[str, Any], str]]: HTTP Response, if no response then None is returned
         """
         if headers == None:
             headers = self.headers
@@ -58,9 +59,9 @@ class HTTPRequestHandler:
         """Método HTTP GET
 
         Args:
-            endpoint (str): Es la parte final del link, luego del dominio de la página WEB
-            headers (Optional[Dict[str, str]], optional): Headers de la petición. Defaults to None.
-            params (Optional[Dict[str, Any]], optional): Parámetros de la petición. Defaults to None.
+            endpoint (str): Final part of the web link
+            headers (Optional[Dict[str, str]], optional): Headers. Defaults to None.
+            params (Optional[Dict[str, Any]], optional): Params . Defaults to None.
 
         Returns:
             Optional[Dict[str, Any] | str]: _description_
@@ -78,9 +79,9 @@ class HTTPRequestHandler:
         """Método HTTP POST
 
         Args:
-            endpoint (str):  Es la parte final del link, luego del dominio de la página WEB
-            headers (Optional[Dict[str, str]], optional): Headers de la petición. Defaults to None. Defaults to None.
-            data (Optional[Union[str, Dict[str, Any]]], optional): Información a enviar dentro de la petición. Defaults to None.
+            endpoint (str):  Final part of the web link
+            headers (Optional[Dict[str, str]], optional): Headers. Defaults to None.
+            data (Optional[Union[str, Dict[str, Any]]], optional): Data . Defaults to None.
 
         Returns:
             Optional[Dict[str, Any] | str]: _description_
@@ -98,9 +99,9 @@ class HTTPRequestHandler:
         """Método HTTP PUT
 
         Args:
-            endpoint (str): Es la parte final del link, luego del dominio de la página WEB
-            headers (Optional[Dict[str, str]], optional): Headers de la petición. Defaults to None. Defaults to None.
-            data (Optional[Union[str, Dict[str, Any]]], optional): Información a enviar dentro de la petición. Defaults to None.
+            endpoint (str): Final part of the web link
+            headers (Optional[Dict[str, str]], optional): Headers. Defaults to None.
+            data (Optional[Union[str, Dict[str, Any]]], optional): Data . Defaults to None.
 
         Returns:
             Optional[Dict[str, Any] | str]: _description_
@@ -115,8 +116,8 @@ class HTTPRequestHandler:
         """Método HTTP DELETE
 
         Args:
-            endpoint (str): Es la parte final del link, luego del dominio de la página WEB
-            headers (Optional[Dict[str, str]], optional): Headers de la petición. Defaults to None. Defaults to None.
+            endpoint (str): Final part of the web link
+            headers (Optional[Dict[str, str]], optional): Headers. Defaults to None.
 
         Returns:
             Optional[Dict[str, Any] | str]: _description_

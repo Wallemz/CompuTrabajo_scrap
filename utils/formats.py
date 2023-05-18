@@ -1,35 +1,45 @@
 import re
 import unicodedata
 
-# Convertir texto a lower case, cambiar espacio por underscores y quitar tildes.
+from typing import Union
+
 def format_string(texto: str) -> str:
-    """Convierte un string al formato requerido:
-    * Todo minúsculas
-    * Sin tíldes
-    * Espacios reemplazados por guión bajo
+    """Formats a string -> No caps -> No tildes -> No spaces, underscore instead
 
     Args:
-        texto (str): Texto a formatear
+        texto (str): Text to convert.
 
     Returns:
-        str: Texto formateado
+        str: Formatted text.
     """
-    # Convertir a minúsculas
-    texto = texto.lower()
+    try:
+        # To lowercase
+        texto = texto.lower()
+        
+        # Delete tildes
+        texto = ''.join(
+            c for c in unicodedata.normalize('NFD', texto)
+            if unicodedata.category(c) != 'Mn'
+        )
+        
+        # Replace spaces to underscore
+        texto = texto.replace(' ', '-')
+        return texto
     
-    # Eliminar tildes
-    texto = ''.join(
-        c for c in unicodedata.normalize('NFD', texto)
-        if unicodedata.category(c) != 'Mn'
-    )
+    except Exception as e:
+        print(f"Could not parse - {texto} - {e}")
+        return ""
     
-    # Reemplazar espacios por guiones bajos
-    texto = texto.replace(' ', '-')
     
-    return texto
+def salary_to_number(salary: str) -> Union[int, str]:
+    """Converts "$1.000.000 (mensual)" to just the salary number -> 1000000
 
+    Args:
+        salary (str): Text to convert.
 
-def salary_to_number(salary: str):
+    Returns:
+        Union[int, str]: Number or empty string
+    """
     # Remove all non-digit characters
     if not salary:
         return ""
@@ -46,6 +56,7 @@ def salary_to_number(salary: str):
 
         # Convert to an integer
         return int(salary)
+    
     except Exception as e:
         print(f"Could not parse Salary {salary} - {e}")
         return ""

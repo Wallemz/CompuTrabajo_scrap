@@ -37,16 +37,22 @@ class Scraper:
     def scrape_requirements(self):
         # Encontrar el primer <ul> con class="disc mbB"
         ul = self.soup.find('ul', {'class': 'disc mbB'})
-
         if not ul:
             return ""
         # Encontrar todos los <li> dentro del <ul>
         lis = ul.find_all('li', {'class': 'mb10'})
-
         if not lis:
             return ""
-        
         # Crear una lista con el contenido de cada <li>
         final_list =  [li.text for li in lis]
-
         return '\n'.join(final_list)
+    
+    def scrape_location(self):
+        box_resume = self.soup.find('div', {'class': 'fr pt10 box_resume hide_m'})
+        box_border_div = box_resume.find('div', {'class': 'box_border'})
+        if not box_border_div:
+            return ""
+        fs16_content = box_border_div.find('p', {'class': 'fs16'})
+        if not fs16_content:
+            return ""
+        return fs16_content.text

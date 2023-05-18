@@ -1,8 +1,8 @@
 from typing import Any, Dict, List, Tuple
 
 from src.http_request_handler import HTTPRequestHandler
-from src.scrapper import Scraper
-from utils.formats import format_string
+from src.computrabajo.scrapper import Scraper
+from utils.formats import format_string, salary_to_number
 from utils.validations import is_html
 
 
@@ -20,27 +20,25 @@ class CompuTrabajo:
         self.summary = {}
         self.details = {}
 
-    def get_job_details(self, job: str, location: str) -> Dict[str, str]:
-        jobs_results = []
+    def get_jobs_details(self, job: str, location: str) -> List[Dict[str, Any]]:
+        jobs_details = []
         offers_links = self._get_offers_links(job, location)
         for offer_link in offers_links:
+            print(offer_link)
             offer_details_html = self._get_offer_details_html(offer_link)
-
+            if offer_details_html is None:
+                continue
             offer_details_scraper = Scraper(offer_details_html)
-            job_info = {}
-            job_info['job_name'] = offer_details_scraper.scrape_job_name()
-            job_info['company'] = offer_details_scraper.scrape_company()
-            job_info['salary'] = offer_details_scraper.scrape_salary()
-            job_info['requirements'] = offer_details_scraper.scrape_requirements()
-            # print("*" * 50)
-            # print(f"Job Name: {job_info['job_name']}")
-            # print(f"Company Name: {job_info['company']}")
-            # print(f"Salary: {job_info['salary']}")
-            # print(f"Requirements: {job_info['requirements']}")
-            # print("*" * 50)
-            jobs_results.append(job_info)
-        print(len(jobs_results))
-        #TODO: Now to CSV
+            job_details = {}
+            job_details['job_name_searched'] = job
+            job_details['location_searched'] = location
+            job_details['job_name'] = offer_details_scraper.scrape_job_name()
+            job_details['company'] = offer_details_scraper.scrape_company()
+            job_details['salary'] = salary_to_number(offer_details_scraper.scrape_salary())
+            job_details['job_location'] = offer_details_scraper.scrape_location()
+            job_details['requirements'] = offer_details_scraper.scrape_requirements()
+            jobs_details.append(job_details)
+        return jobs_details
 
 
     def _get_offers_links(self, job: str, location: str) -> List[str]:
